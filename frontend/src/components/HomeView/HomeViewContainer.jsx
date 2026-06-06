@@ -1,7 +1,14 @@
-import {HomeView} from './HomeView';
+import { useNavigate } from 'react-router-dom';
+import { HomeView } from './HomeView';
 
 const HomeContainer = () => {
-  return <HomeView />;
+  const navigate = useNavigate();
+
+  const handleUploadClick = () => {
+    navigate('/upload');
+  };
+
+  return <HomeView onUploadClick={handleUploadClick} />;
 };
 
 export default HomeContainer;
