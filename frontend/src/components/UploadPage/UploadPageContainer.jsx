@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UploadPage } from './UploadPage';
+import { initializeUpload } from '../../services/videoService';
 
 export const UploadPageContainer = () => {
   const navigate = useNavigate();
@@ -22,12 +23,22 @@ export const UploadPageContainer = () => {
 
   const handleUpload = async () => {
     try {
-      console.log('Uploading video...');
+      if (!title.trim()) {
+        alert('Please provide a title.');
+        return;
+      }
+      if (!selectedFile) {
+        alert('Please select a video file.');
+        return;
+      }
 
-      console.log({
+      const { videoId, uploadUrl } = await initializeUpload({
         title,
-        file: selectedFile,
+        fileName: selectedFile.name,
+        contentType: selectedFile.type,
       });
+
+      console.log('Received from init-upload API:', { videoId, uploadUrl });
 
       // TODO:
       // 1. Call init-upload API
