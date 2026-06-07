@@ -1,8 +1,15 @@
 import express from 'express';
 import { PORT } from './configs/serverConfig.js';
 import connectDB from './configs/dbConfig.js';
+import cors from 'cors';
+import videoRoutes from './routes/videoRoutes.js';
 
 const app = express();
+
+app.use(express.json());
+app.use(cors());
+
+app.use('/video', videoRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
