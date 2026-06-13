@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UploadPage } from './UploadPage';
 import { initializeUpload } from '../../services/videoService';
+import { toast } from 'sonner';
 
 export const UploadPageContainer = () => {
   const navigate = useNavigate();
@@ -24,11 +25,11 @@ export const UploadPageContainer = () => {
   const handleUpload = async () => {
     try {
       if (!title.trim()) {
-        alert('Please provide a title.');
+        toast.error('Please enter a title for the video.');
         return;
       }
       if (!selectedFile) {
-        alert('Please select a video file.');
+        toast.error('Please select a video file.');
         return;
       }
 
@@ -39,7 +40,7 @@ export const UploadPageContainer = () => {
       });
 
       if (!videoId || !uploadUrl) {
-        alert('Failed to initialize upload. Please try again.');
+        toast.error('Failed to initialize upload. Please try again.');
         return;
       }
 
@@ -63,11 +64,11 @@ export const UploadPageContainer = () => {
       // 3. Upload video to S3
       // 4. Call complete-upload API
 
-      alert('Upload Successful 🚀');
+      toast.success('Upload Successful 🚀');
     } catch (error) {
       console.error(error);
 
-      alert('Upload Failed');
+      toast.error('Upload Failed');
     }
   };
 
