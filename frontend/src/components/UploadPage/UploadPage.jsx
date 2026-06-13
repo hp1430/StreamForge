@@ -1,6 +1,7 @@
 export const UploadPage = ({
   title,
   selectedFile,
+  isUploading,
   onTitleChange,
   onFileChange,
   onUpload,
@@ -57,10 +58,10 @@ export const UploadPage = ({
           <div className='flex justify-center'>
             <button
               onClick={onUpload}
-              disabled={!title || !selectedFile}
+              disabled={!title || !selectedFile || isUploading}
               className='rounded-lg bg-blue-600 px-8 py-3 font-medium hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-700'
             >
-              Upload
+              {isUploading ? 'Uploading...' : 'Upload'}
             </button>
           </div>
         </div>

@@ -8,6 +8,7 @@ export const UploadPageContainer = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleTitleChange = (value) => {
@@ -44,6 +45,8 @@ export const UploadPageContainer = () => {
         return;
       }
 
+      setIsUploading(true);
+
       const uploadResponse = await fetch(uploadUrl, {
         method: 'PUT',
         body: selectedFile,
@@ -56,7 +59,7 @@ export const UploadPageContainer = () => {
         throw new Error('Failed to upload video to S3');
       }
 
-      console.log('Video uploaded to S3 successfully');
+      setIsUploading(false);
 
       // TODO:
       // 1. Call init-upload API
@@ -76,6 +79,7 @@ export const UploadPageContainer = () => {
     <UploadPage
       title={title}
       selectedFile={selectedFile}
+      isUploading={isUploading}
       onTitleChange={handleTitleChange}
       onFileChange={handleFileChange}
       onUpload={handleUpload}
