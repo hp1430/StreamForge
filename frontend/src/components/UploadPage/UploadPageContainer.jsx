@@ -38,15 +38,30 @@ export const UploadPageContainer = () => {
         contentType: selectedFile.type,
       });
 
-      console.log('Received from init-upload API:', { videoId, uploadUrl });
+      if (!videoId || !uploadUrl) {
+        alert('Failed to initialize upload. Please try again.');
+        return;
+      }
+
+      const uploadResponse = await fetch(uploadUrl, {
+        method: 'PUT',
+        body: selectedFile,
+        headers: {
+          'Content-Type': selectedFile.type,
+        },
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload video to S3');
+      }
+
+      console.log('Video uploaded to S3 successfully');
 
       // TODO:
       // 1. Call init-upload API
       // 2. Get presigned URL
       // 3. Upload video to S3
       // 4. Call complete-upload API
-
-      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       alert('Upload Successful 🚀');
     } catch (error) {
