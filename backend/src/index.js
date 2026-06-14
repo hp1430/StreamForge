@@ -3,6 +3,7 @@ import { PORT } from './configs/serverConfig.js';
 import connectDB from './configs/dbConfig.js';
 import cors from 'cors';
 import videoRoutes from './routes/videoRoutes.js';
+import { startIngestionWorker } from './workers/ingestionWorker.js';
 
 const app = express();
 
@@ -14,4 +15,5 @@ app.use('/video', videoRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   connectDB();
+  startIngestionWorker();
 });

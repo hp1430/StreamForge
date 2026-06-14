@@ -15,3 +15,5 @@ export const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 export const RAW_BUCKET = process.env.RAW_BUCKET;
 
 export const PROCESSED_BUCKET = process.env.PROCESSED_BUCKET;
+
+export const SQS_QUEUE_URL = process.env.SQS_QUEUE_URL;
