@@ -4,6 +4,7 @@ import {
   DeleteMessageCommand
 } from '@aws-sdk/client-sqs';
 import { SQS_PROCESSING_QUEUE_URL } from '../configs/serverConfig.js';
+import { downloadRawVideo } from '../services/downloadRawVideoService.js';
 
 export const startTranscodingWorker = async () => {
   while (true) {
@@ -20,6 +21,14 @@ export const startTranscodingWorker = async () => {
 
       for (const message of messages) {
         const payload = JSON.parse(message.Body);
+
+        const { key, videoId } = payload;
+
+        console.log('Downloading...');
+
+        const localFilePath = await downloadRawVideo(key, videoId);
+
+        console.log('Downloaded to:', localFilePath);
 
         await sqsClient.send(
           new DeleteMessageCommand({

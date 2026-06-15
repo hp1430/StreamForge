@@ -13,7 +13,7 @@
   "author": "Himanshu Parashar",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1063.0",
+    "@aws-sdk/client-s3": "^3.1068.0",
     "@aws-sdk/client-sqs": "^3.1068.0",
     "@aws-sdk/s3-request-presigner": "^3.1063.0",
     "cors": "^2.8.6",
