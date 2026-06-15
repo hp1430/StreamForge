@@ -5,6 +5,7 @@ import {
 import { sqsClient } from '../configs/sqsConfig.js';
 import { SQS_QUEUE_URL } from '../configs/serverConfig.js';
 import Video from '../schemas/videoSchema.js';
+import { enqueueVideoForProcessing } from '../services/processingQueueService.js';
 
 export const startIngestionWorker = async () => {
   while (true) {
@@ -33,14 +34,24 @@ export const startIngestionWorker = async () => {
           })
         );
 
-        const response = await Video.findOneAndUpdate(
+        const video = await Video.findOneAndUpdate(
           {
             originalVideoKey: key
           },
           {
             status: 'UPLOADED'
+          },
+          {
+            returnDocument: 'after'
           }
         );
+
+        if (video) {
+          await enqueueVideoForProcessing({
+            videoId: video._id,
+            key: video.originalVideoKey
+          });
+        }
       }
     } catch (error) {
       console.error('Error in ingestion worker:', error);

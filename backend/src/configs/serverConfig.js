@@ -17,3 +17,5 @@ export const RAW_BUCKET = process.env.RAW_BUCKET;
 export const PROCESSED_BUCKET = process.env.PROCESSED_BUCKET;
 
 export const SQS_QUEUE_URL = process.env.SQS_QUEUE_URL;
+
+export const SQS_PROCESSING_QUEUE_URL = process.env.SQS_PROCESSING_QUEUE_URL;
