@@ -5,6 +5,8 @@ import {
 } from '@aws-sdk/client-sqs';
 import { SQS_PROCESSING_QUEUE_URL } from '../configs/serverConfig.js';
 import { downloadRawVideo } from '../services/downloadRawVideoService.js';
+import path from 'path';
+import { generate720pHls } from '../services/transcodingService.js';
 
 export const startTranscodingWorker = async () => {
   while (true) {
@@ -29,6 +31,14 @@ export const startTranscodingWorker = async () => {
         const localFilePath = await downloadRawVideo(key, videoId);
 
         console.log('Downloaded to:', localFilePath);
+
+        const { outputDir, playlistPath } = await generate720pHls(
+          localFilePath,
+          videoId
+        );
+
+        console.log(outputDir);
+        console.log(playlistPath);
 
         await sqsClient.send(
           new DeleteMessageCommand({
