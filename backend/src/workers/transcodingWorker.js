@@ -6,7 +6,7 @@ import {
 import { SQS_PROCESSING_QUEUE_URL } from '../configs/serverConfig.js';
 import { downloadRawVideo } from '../services/downloadRawVideoService.js';
 import path from 'path';
-import { generate720pHls } from '../services/transcodingService.js';
+import { generateAdaptiveHls } from '../services/transcodingService.js';
 import { uploadProcessedFiles } from '../services/uploadProcessedVideoService.js';
 
 export const startTranscodingWorker = async () => {
@@ -24,23 +24,13 @@ export const startTranscodingWorker = async () => {
 
       for (const message of messages) {
         const payload = JSON.parse(message.Body);
-
         const { key, videoId } = payload;
-
-        console.log('Downloading...');
 
         const localFilePath = await downloadRawVideo(key, videoId);
 
-        console.log('Downloaded to:', localFilePath);
-
-        const { outputDir, playlistPath } = await generate720pHls(
-          localFilePath,
-          videoId
-        );
+        const outputDir = await generateAdaptiveHls(localFilePath, videoId);
 
         await uploadProcessedFiles(videoId, outputDir);
-
-        console.log('HLS uploaded to S3, cleaning up...');
 
         await sqsClient.send(
           new DeleteMessageCommand({

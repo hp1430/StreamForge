@@ -1,28 +1,54 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
+
+import { PutObjectCommand } from '@aws-sdk/client-s3';
+
 import { s3Client } from '../configs/s3Config.js';
 import { PROCESSED_BUCKET } from '../configs/serverConfig.js';
 
-export const uploadProcessedFiles = async (videoId, outputDir) => {
-  const files = fs.readdirSync(outputDir);
+const getContentType = (fileName) => {
+  if (fileName.endsWith('.m3u8')) {
+    return 'application/vnd.apple.mpegurl';
+  }
 
-  for (const file of files) {
-    const filePath = path.join(outputDir, file);
-    const fileContent = fs.readFileSync(filePath);
+  if (fileName.endsWith('.ts')) {
+    return 'video/mp2t';
+  }
 
-    const s3Key = `videos/${videoId}/${file}`;
+  return 'application/octet-stream';
+};
+
+const uploadDirectory = async (localDir, s3Prefix) => {
+  const entries = fs.readdirSync(localDir, {
+    withFileTypes: true
+  });
+
+  for (const entry of entries) {
+    const fullPath = path.join(localDir, entry.name);
+
+    const s3Key = `${s3Prefix}/${entry.name}`;
+
+    if (entry.isDirectory()) {
+      await uploadDirectory(fullPath, s3Key);
+
+      continue;
+    }
+
+    const fileContent = fs.readFileSync(fullPath);
 
     await s3Client.send(
       new PutObjectCommand({
         Bucket: PROCESSED_BUCKET,
         Key: s3Key,
         Body: fileContent,
-        contentType: file.endsWith('.m3u8')
-          ? 'application/vnd.apple.mpegurl'
-          : 'video/MP2T'
+        ContentType: getContentType(entry.name)
       })
     );
-    console.log(`Uploaded ${file} to S3 with key: ${s3Key}`);
+
+    console.log('Uploaded:', s3Key);
   }
+};
+
+export const uploadProcessedFiles = async (videoId, outputDir) => {
+  await uploadDirectory(outputDir, `videos/${videoId}`);
 };
