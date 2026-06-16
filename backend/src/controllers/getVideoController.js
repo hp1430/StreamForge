@@ -1,6 +1,7 @@
 import {
   fetchAllVideosService,
-  fetchVideoByIdService
+  fetchVideoByIdService,
+  getPlaybackUrlService
 } from '../services/getVideoService.js';
 
 export const getAllReadyVideos = async (req, res) => {

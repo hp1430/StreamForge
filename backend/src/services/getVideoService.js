@@ -1,4 +1,8 @@
-import { getAllReadyVideos } from '../repositories/videoRepository.js';
+import {
+  getAllReadyVideos,
+  getVideoById
+} from '../repositories/videoRepository.js';
+import { PROCESSED_BUCKET, AWS_REGION } from '../configs/serverConfig.js';
 
 export const fetchAllVideosService = async () => {
   const videos = await getAllReadyVideos();
