@@ -4,7 +4,7 @@ import { VideoCard } from './VideoCard';
 export const VideoCardContainer = ({ video }) => {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     navigate(`/video/${video.id}`);
   };
 

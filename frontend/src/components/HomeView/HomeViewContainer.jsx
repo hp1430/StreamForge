@@ -15,6 +15,7 @@ const HomeContainer = () => {
     const fetchVideos = async () => {
       const videos = await fetchAllReadyVideos();
       setVideos(videos?.data || []);
+      console.log('Fetched videos:', videos?.data || []);
     };
     fetchVideos();
   }, []);
