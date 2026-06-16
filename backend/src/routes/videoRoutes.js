@@ -2,7 +2,8 @@ import express from 'express';
 import { initUpload } from '../controllers/videoController.js';
 import {
   getAllReadyVideos,
-  getVideoById
+  getVideoById,
+  getPlaybackUrl
 } from '../controllers/getVideoController.js';
 
 const router = express.Router();
