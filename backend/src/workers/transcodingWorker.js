@@ -8,6 +8,8 @@ import { downloadRawVideo } from '../services/downloadRawVideoService.js';
 import path from 'path';
 import { generateAdaptiveHls } from '../services/transcodingService.js';
 import { uploadProcessedFiles } from '../services/uploadProcessedVideoService.js';
+import { updateVideoStatusService } from '../services/updateVideoStatusService.js';
+import { cleanupVideoFilesService } from '../services/cleanupVideoFilesService.js';
 
 export const startTranscodingWorker = async () => {
   while (true) {
@@ -31,6 +33,10 @@ export const startTranscodingWorker = async () => {
         const outputDir = await generateAdaptiveHls(localFilePath, videoId);
 
         await uploadProcessedFiles(videoId, outputDir);
+
+        await updateVideoStatusService(videoId, 'READY');
+
+        cleanupVideoFilesService(localFilePath, outputDir);
 
         await sqsClient.send(
           new DeleteMessageCommand({
