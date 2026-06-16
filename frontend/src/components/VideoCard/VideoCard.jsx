@@ -1,0 +1,29 @@
+export const VideoCard = ({ title, onClick }) => {
+  return (
+    <div
+      onClick={onClick}
+      className='
+        cursor-pointer
+        rounded-xl
+        border
+        border-zinc-800
+        bg-zinc-900
+        p-4
+        transition-all
+        hover:border-zinc-700
+        hover:bg-zinc-800
+      '
+    >
+      <h3
+        className='
+          text-base
+          font-medium
+          text-white
+          line-clamp-2
+        '
+      >
+        {title}
+      </h3>
+    </div>
+  );
+};
