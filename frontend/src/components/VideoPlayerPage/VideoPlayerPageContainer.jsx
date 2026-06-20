@@ -15,8 +15,6 @@ export const VideoPlayerPageContainer = () => {
         const response = await fetchPlaybackUrl(id);
 
         setPlaybackUrl(response?.data?.playbackUrl || '');
-
-        console.log('Fetched playback URL:', response?.data?.playbackUrl || '');
       } catch (error) {
         console.error(error);
       }

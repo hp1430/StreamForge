@@ -23,3 +23,8 @@ export const fetchPlaybackUrl = async (videoId) => {
   const response = await axios.get(`/video/${videoId}/playback`);
   return response.data;
 };
+
+export const getVideoStatus = async (videoId) => {
+  const response = await axios.get(`/video/status/${videoId}`);
+  return response.data.data.status;
+};

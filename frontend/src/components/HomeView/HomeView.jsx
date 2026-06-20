@@ -1,6 +1,7 @@
+import { ProcessingStatus } from '../ProcessingStatus/ProcessingStatus';
 import { VideoGrid } from '../VideoGrid/VideoGrid';
 
-export const HomeView = ({ onUploadClick, videos }) => {
+export const HomeView = ({ onUploadClick, videos, processingVideos }) => {
   return (
     <div className='min-h-screen bg-slate-950'>
       <header className='border-b border-slate-800'>
@@ -12,6 +13,8 @@ export const HomeView = ({ onUploadClick, videos }) => {
               Adaptive Video Streaming Platform
             </p>
           </div>
+
+          <ProcessingStatus videos={processingVideos} />
 
           <button
             onClick={onUploadClick}

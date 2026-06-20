@@ -40,6 +40,12 @@ export const UploadPageContainer = () => {
         contentType: selectedFile.type,
       });
 
+      const uploads = JSON.parse(localStorage.getItem('myUploads')) || [];
+
+      uploads.push(videoId);
+
+      localStorage.setItem('myUploads', JSON.stringify(uploads));
+
       if (!videoId || !uploadUrl) {
         toast.error('Failed to initialize upload. Please try again.');
         return;
@@ -61,13 +67,9 @@ export const UploadPageContainer = () => {
 
       setIsUploading(false);
 
-      // TODO:
-      // 1. Call init-upload API
-      // 2. Get presigned URL
-      // 3. Upload video to S3
-      // 4. Call complete-upload API
-
       toast.success('Upload Successful 🚀');
+
+      navigate('/');
     } catch (error) {
       console.error(error);
 
@@ -76,14 +78,16 @@ export const UploadPageContainer = () => {
   };
 
   return (
-    <UploadPage
-      title={title}
-      selectedFile={selectedFile}
-      isUploading={isUploading}
-      onTitleChange={handleTitleChange}
-      onFileChange={handleFileChange}
-      onUpload={handleUpload}
-      onBack={handleBack}
-    />
+    <>
+      <UploadPage
+        title={title}
+        selectedFile={selectedFile}
+        isUploading={isUploading}
+        onTitleChange={handleTitleChange}
+        onFileChange={handleFileChange}
+        onUpload={handleUpload}
+        onBack={handleBack}
+      />
+    </>
   );
 };
