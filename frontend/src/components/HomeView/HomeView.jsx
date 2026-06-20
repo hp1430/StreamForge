@@ -1,5 +1,6 @@
 import { ProcessingStatus } from '../ProcessingStatus/ProcessingStatus';
 import { VideoGrid } from '../VideoGrid/VideoGrid';
+import logo from '../../assets/logo1.PNG';
 
 export const HomeView = ({ onUploadClick, videos, processingVideos }) => {
   return (
@@ -7,11 +8,10 @@ export const HomeView = ({ onUploadClick, videos, processingVideos }) => {
       <header className='border-b border-slate-800'>
         <div className='mx-auto flex max-w-7xl items-center justify-between px-6 py-4'>
           <div>
-            <h1 className='text-3xl font-bold text-white'>StreamForge</h1>
-
-            <p className='text-sm text-slate-400'>
-              Adaptive Video Streaming Platform
-            </p>
+            <img 
+              className='h-20 w-auto'
+              src={logo} 
+            />
           </div>
 
           <ProcessingStatus videos={processingVideos} />
