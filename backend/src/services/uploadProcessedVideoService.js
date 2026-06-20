@@ -44,8 +44,6 @@ const uploadDirectory = async (localDir, s3Prefix) => {
         ContentType: getContentType(entry.name)
       })
     );
-
-    console.log('Uploaded:', s3Key);
   }
 };
 

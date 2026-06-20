@@ -1,7 +1,8 @@
 import {
   fetchAllVideosService,
   fetchVideoByIdService,
-  getPlaybackUrlService
+  getPlaybackUrlService,
+  getVideoStatusService
 } from '../services/getVideoService.js';
 
 export const getAllReadyVideos = async (req, res) => {
@@ -49,6 +50,23 @@ export const getPlaybackUrl = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching playback URL:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+export const getVideoStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: 'Video ID is required' });
+    }
+    const videoStatus = await getVideoStatusService(id);
+    return res.status(200).json({
+      success: true,
+      data: { status: videoStatus }
+    });
+  } catch (error) {
+    console.error('Error fetching video status:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

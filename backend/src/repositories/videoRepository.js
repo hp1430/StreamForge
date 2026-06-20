@@ -11,3 +11,11 @@ export const getVideoById = async (videoId) => {
     status: 'READY'
   });
 };
+
+export const getVideoStatusById = async (videoId) => {
+  const video = await Video.findById(videoId).select('title status');
+  if (!video) {
+    throw new Error('Video not found');
+  }
+  return video;
+};

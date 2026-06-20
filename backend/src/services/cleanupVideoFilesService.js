@@ -12,8 +12,6 @@ export const cleanupVideoFilesService = (rawFilePath, processedDir) => {
         force: true
       });
     }
-
-    console.log('Local files deleted');
   } catch (error) {
     console.error('Cleanup failed:', error);
   }

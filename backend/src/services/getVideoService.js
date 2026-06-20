@@ -1,6 +1,7 @@
 import {
   getAllReadyVideos,
-  getVideoById
+  getVideoById,
+  getVideoStatusById
 } from '../repositories/videoRepository.js';
 import { PROCESSED_BUCKET, AWS_REGION } from '../configs/serverConfig.js';
 
@@ -43,4 +44,12 @@ export const getPlaybackUrlService = async (videoId) => {
   return {
     playbackUrl: `https://${PROCESSED_BUCKET}.s3.${AWS_REGION}.amazonaws.com/videos/${videoId}/master.m3u8`
   };
+};
+
+export const getVideoStatusService = async (videoId) => {
+  const videoStatus = await getVideoStatusById(videoId);
+  if (!videoStatus) {
+    throw new Error('Video not found');
+  }
+  return videoStatus;
 };
